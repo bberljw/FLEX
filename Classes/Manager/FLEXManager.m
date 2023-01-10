@@ -50,7 +50,11 @@
     NSAssert(NSThread.isMainThread, @"You must use %@ from the main thread only.", NSStringFromClass([self class]));
     
     if (!_explorerWindow) {
-        _explorerWindow = [[FLEXWindow alloc] initWithFrame:FLEXUtility.appKeyWindow.bounds];
+        // when appfinishlunch to show explorer,the keywindow is nil
+        // so the bounds is zero
+        // of course set the keywindow before show explorer is the better way
+        CGRect frame = FLEXUtility.appKeyWindow ? FLEXUtility.appKeyWindow.bounds: UIScreen.mainScreen.bounds;
+        _explorerWindow = [[FLEXWindow alloc] initWithFrame:frame];
         _explorerWindow.eventDelegate = self;
         _explorerWindow.rootViewController = self.explorerViewController;
     }
